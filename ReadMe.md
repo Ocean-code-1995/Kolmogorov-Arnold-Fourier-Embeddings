@@ -99,6 +99,10 @@ The dataset comprises **923 images** of healthy and bleached corals, sourced fro
 ---
 ![test-performance](pics/test_performance.png)
 
+#### Confusion Matrices
+![confusion-matrices](pics/confusion_matrices_all.png)
+
+
 ---
 
 ## Limitations & Future Work
