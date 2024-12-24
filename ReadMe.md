@@ -46,7 +46,7 @@ The dataset comprises **923 images** of healthy and bleached corals, sourced fro
 - Stratified splits (Train: 70%, Validation: 20%, Test: 20%).
 - Data augmentation with brightness, contrast, and saturation adjustments.
 
-![RGB Distribution](pictures/rgb_dist.png)
+![RGB Distribution](pics/rgb_dist.png)
 
 ---
 
@@ -74,9 +74,21 @@ The dataset comprises **923 images** of healthy and bleached corals, sourced fro
 - **Convolutional Embedding:** Strong precision but less robust to noise.
 - **MLP Embedding:** Balanced performance across metrics.
 
+#### Loss & Performance Curves
+![Performance-original](pics/train_val_curves_original_data.png)
+
+#### Attention Maps
+![AttentionMaps-original](pics/attention_maps_original_data.png)
+
 ### Training on Augmented Data
 - Augmentation improved robustness but introduced variability in some metrics.
 - Fourier embeddings showed resilience, while convolutional embeddings were more sensitive.
+
+#### Loss & Performance Curves
+![Performance-augmented](pics/train_val_curves_augmented_data.png)
+
+#### Attention Maps
+![AttentionMaps-augmented](pics/attention_maps_augmented_data.png)
 
 ### Comparative Performance
 | Model           | Accuracy | F1-Score | Precision | Recall |
