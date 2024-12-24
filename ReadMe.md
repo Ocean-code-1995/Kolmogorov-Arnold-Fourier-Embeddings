@@ -74,20 +74,20 @@ The dataset comprises **923 images** of healthy and bleached corals, sourced fro
 - **Convolutional Embedding:** Strong precision but less robust to noise.
 - **MLP Embedding:** Balanced performance across metrics.
 
-#### Loss & Performance Curves
+#### `Loss & Performance Curve`
 ![Performance-original](pics/train_val_curves_original_data.png)
 
-#### Attention Maps
+#### `Attention Map`
 ![AttentionMaps-original](pics/attentionmaps_original_data.png)
 
 ### Training on Augmented Data
 - Augmentation improved robustness but introduced variability in some metrics.
 - Fourier embeddings showed resilience, while convolutional embeddings were more sensitive.
 
-#### Loss & Performance Curves
+#### `Loss & Performance Curve`
 ![Performance-augmented](pics/train_val_curves_augmented_data.png)
 
-#### Attention Maps
+#### `Attention Map`
 ![AttentionMaps-augmented](pics/attention_maps_augmented_data.png)
 
 ### Comparative Performance
@@ -96,6 +96,8 @@ The dataset comprises **923 images** of healthy and bleached corals, sourced fro
 | Fourier (Original) | 0.754    | 0.729    | 0.728     | 0.745  |
 | Convolutional (Original) | 0.765 | 0.716 | 0.757 | 0.694 |
 | Fourier (Augmented) | 0.724    | 0.693    | 0.738     | 0.677  |
+---
+![test-performance](pics/test_performance.png)
 
 ---
 
