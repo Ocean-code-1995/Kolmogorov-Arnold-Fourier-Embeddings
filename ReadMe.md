@@ -1,6 +1,6 @@
 # Coral Health Classification Using Vision Transformers with Kolmogorov-Arnold Fourier Embeddings
 
-![Coral Health](pictures/healthy_vs_bleached.png)
+![Coral Health](pics/healthy_vs_bleached.png)
 
 ## Abstract
 
