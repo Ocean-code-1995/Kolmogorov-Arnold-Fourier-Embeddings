@@ -1,0 +1,8 @@
+FashionMNIST
+coral_original
+duplicates
+lightning_logs
+conv_optuna_study.csv
+.ipynb_checkpoints/
+attention_map_pics/
+checkpoints/
