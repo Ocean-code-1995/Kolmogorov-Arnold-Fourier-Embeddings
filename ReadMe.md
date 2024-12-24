@@ -78,7 +78,7 @@ The dataset comprises **923 images** of healthy and bleached corals, sourced fro
 ![Performance-original](pics/train_val_curves_original_data.png)
 
 #### Attention Maps
-![AttentionMaps-original](pics/attention_maps_original_data.png)
+![AttentionMaps-original](pics/attentionmaps_original_data.png)
 
 ### Training on Augmented Data
 - Augmentation improved robustness but introduced variability in some metrics.
