@@ -1,6 +1,5 @@
 FashionMNIST
-#coral_original
-#duplicates
+data
 lightning_logs
 conv_optuna_study.csv
 .ipynb_checkpoints/
