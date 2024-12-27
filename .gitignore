@@ -1,5 +1,5 @@
 FashionMNIST/
-data/
+**/data/
 lightning_logs/
 conv_optuna_study.csv
 .ipynb_checkpoints/
