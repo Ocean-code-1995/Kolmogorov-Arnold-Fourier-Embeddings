@@ -1,6 +1,6 @@
-FashionMNIST
-data
-lightning_logs
+FashionMNIST/
+data/
+lightning_logs/
 conv_optuna_study.csv
 .ipynb_checkpoints/
 attention_map_pics/
