@@ -5,3 +5,4 @@ conv_optuna_study.csv
 .ipynb_checkpoints/
 attention_map_pics/
 checkpoints/
+.DS_Store
