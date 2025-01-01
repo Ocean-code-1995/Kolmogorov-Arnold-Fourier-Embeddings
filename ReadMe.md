@@ -115,6 +115,8 @@ The dataset comprises **923 images** of healthy and bleached corals, sourced fro
 1. Experiment with **SWIN Transformers** for hierarchical attention.
 2. Integrate **multi-modal data** (e.g., environmental metadata).
 3. Enhance interpretability with advanced explainable AI techniques.
+4. Use cases with more data for instance:
+   1. https://github.com/lindawangg/COVID-Net
 
 ---
 
