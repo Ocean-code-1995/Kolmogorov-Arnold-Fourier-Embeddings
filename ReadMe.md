@@ -110,12 +110,17 @@ The dataset comprises **923 images** of healthy and bleached corals, sourced fro
 ### Limitations
 - **GPU Constraints:** Restricted hyperparameter tuning and model exploration.
 - **Limited Dataset Diversity:** Augmented data improved generalization but introduced noise.
+  - more data to be included for coral classification:
+    - https://huggingface.co/datasets/esahit/coral-health-classification?utm_source=chatgpt.com
+    - https://universe.roboflow.com/thesis-fcq63/classification-of-corals/dataset/1/images
+    - https://images.cv/dataset/coral-reef-image-classification-dataset?utm_source=chatgpt.com
+    - https://data.mendeley.com/datasets/86y667257h/1?utm_source=chatgpt.com
 
 ### Future Directions
 1. Experiment with **SWIN Transformers** for hierarchical attention.
 2. Integrate **multi-modal data** (e.g., environmental metadata).
 3. Enhance interpretability with advanced explainable AI techniques.
-4. Use cases with more data for instance:
+4. Different use cases with more data for instance:
    1. https://github.com/lindawangg/COVID-Net
 
 ---
