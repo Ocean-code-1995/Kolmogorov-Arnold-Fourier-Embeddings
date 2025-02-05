@@ -46,9 +46,16 @@ def save_final_model_and_hparams(
         model_name: Name of the model (e.g., "ViT" or "CNN").
         base_checkpoint_dir: Base directory for storing checkpoints.
     """
-    decision = input(
-        "Do you want to save the final model based on these loss curves? (y/n): "
-    ).strip().lower()
+    # Loop until the user provides a valid input.
+    while True:
+        decision = input(
+            "Do you want to save the final model based on these loss curves? (y/n): "
+        ).strip().lower()
+        if decision in ['y', 'n']:
+            break
+        else:
+            print("Invalid input. Please enter 'y' for yes or 'n' for no.")
+
 
     # Create a unique identifier using the current date and time.
     unique_id = datetime.datetime.now().strftime("%Y%m%d_%H%M")
