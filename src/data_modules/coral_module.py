@@ -7,6 +7,13 @@ from PIL import Image
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import numpy as np
+import random
+
+
+def worker_init_fn(worker_id):
+    worker_seed = torch.initial_seed() % 2**32
+    np.random.seed(worker_seed)
+    random.seed(worker_seed)
 
 class CoralDataModule(pl.LightningDataModule):
     def __init__(
@@ -76,7 +83,9 @@ class CoralDataModule(pl.LightningDataModule):
             with Image.open(path) as img:
                 return img.width <= 300 and img.height <= 300
 
-        full_dataset = datasets.ImageFolder(root=self.data_dir, transform=self.transform, is_valid_file=filter_large_images)
+        full_dataset = datasets.ImageFolder(
+            root=self.data_dir, transform=self.transform, is_valid_file=filter_large_images
+        )
 
         # Splitting the dataset
         train_val_idx, test_idx = train_test_split(
