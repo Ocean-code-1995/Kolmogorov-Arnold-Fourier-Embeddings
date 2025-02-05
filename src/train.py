@@ -1,5 +1,5 @@
 import os
-import argparse
+from datetime import datetime
 import torch
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import WandbLogger
@@ -10,6 +10,7 @@ from omegaconf import DictConfig, OmegaConf
 from models.vision_transformer import ViT
 from data.data_module import CoralDataModule
 from utils.logger import log_hyperparameters, save_final_model_and_hparams
+from utils.set_seed import set_seed
 from evaluation.visualizations import plot_loss_curves
 
 
@@ -96,9 +97,13 @@ def main(cfg: DictConfig) -> None:
     # === Evaluate Loss on Train and Validation Sets ===
 
     # Plot the loss curves
+    date    = datetime.now().strftime("%Y%m%d_%H%M")
+    save_to = f"src/loss_curves/{date}-{cfg.model.model_name}-{cfg.model.embedding_type}.png"
+
     plot_loss_curves(
         train_losses = model.train_losses,
         val_losses   = model.val_losses,
+        save_to      = save_to
     )
 
     # === Save the Final Model ===
@@ -115,6 +120,7 @@ def main(cfg: DictConfig) -> None:
 
 
 if __name__ == "__main__":
+    set_seed(14473)
     main()
 
 
