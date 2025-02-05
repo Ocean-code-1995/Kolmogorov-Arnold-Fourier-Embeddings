@@ -12,25 +12,25 @@ import cv2
 
 
 
-def plot_loss_curves(train_losses, val_losses):
+def plot_loss_curves(train_losses, val_losses, save_to):
     """
     Plot training and validation loss curves.
-    
+
     Parameters:
         train_losses (list or array): Loss values for each epoch during training.
         val_losses (list or array): Loss values for each epoch during validation.
     """
     # Create an epoch index based on the length of train losses.
     epochs = range(1, len(train_losses) + 1)
-    
+
     # Calculate the difference between the final training and validation loss.
     delta_loss = train_losses[-1] - val_losses[-1]
-    
+
     # Plotting properties
     line_width = 2
     train_color = "#007BFF"  # Blue for training
     val_color = "#FF4500"    # Red for validation
-    
+
     # Create the plot
     plt.figure(figsize=(10, 5))
     plt.plot(epochs, train_losses, label='Training Loss', color=train_color, linewidth=line_width)
@@ -42,6 +42,9 @@ def plot_loss_curves(train_losses, val_losses):
     plt.grid(True)
     plt.tight_layout()
     plt.show()
+    # Save the plot to the specified file
+    plt.savefig(save_to)
+    print(f"Loss curves saved to {save_to}")
 
 
 
