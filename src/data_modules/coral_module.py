@@ -11,19 +11,20 @@ import random
 
 
 def worker_init_fn(worker_id):
+    "Set the random seed for each worker"
     worker_seed = torch.initial_seed() % 2**32
     np.random.seed(worker_seed)
     random.seed(worker_seed)
 
 class CoralDataModule(pl.LightningDataModule):
     def __init__(
-        self, 
-        data_dir, 
-        batch_size=64, 
-        img_size=300, 
-        scaler_type='min-max', 
-        test_size=0.2, 
-        val_size=0.1, 
+        self,
+        data_dir,
+        batch_size=64,
+        img_size=300,
+        scaler_type='min-max',
+        test_size=0.2,
+        val_size=0.1,
         num_workers=2,
         padding_mode='reflect' # Padding mode can be 'reflect' or 'edge'
     ):
@@ -38,8 +39,8 @@ class CoralDataModule(pl.LightningDataModule):
         self.padding_mode = padding_mode
         self.transform = self.get_transform()
 
-        
-        
+
+
     def custom_pad(self, img):
         left = top = right = bottom = 0
         if img.width < 300 or img.height < 300:
@@ -50,7 +51,6 @@ class CoralDataModule(pl.LightningDataModule):
             top = delta_h // 2
             bottom = delta_h - top
         return transforms.functional.pad(img, (left, top, right, bottom), padding_mode=self.padding_mode)
-    
     def get_transform(self):
         """
         Selects the appropriate scaling transform based on the `scaler_type`.
@@ -86,6 +86,8 @@ class CoralDataModule(pl.LightningDataModule):
         full_dataset = datasets.ImageFolder(
             root=self.data_dir, transform=self.transform, is_valid_file=filter_large_images
         )
+        # Display class to index mapping
+        print("Class to index mapping:", full_dataset.class_to_idx)
 
         # Splitting the dataset
         train_val_idx, test_idx = train_test_split(
