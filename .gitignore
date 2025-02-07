@@ -9,6 +9,6 @@ checkpoints/
 **/.hydra/
 __pycache__/
 *.py[cod]
-
+data_all.zip
 
 **/explore_new_data/
