@@ -1,4 +1,6 @@
 import torch
+import torchvision.transforms as transforms
+
 
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -9,6 +11,7 @@ import numpy as np
 
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import cv2
+from PIL import Image
 
 
 
@@ -112,6 +115,71 @@ def plot_metrics_curves(model):
     plt.show();
 
 
+def preprocess_single_image(image_path, img_size=300, padding_mode='reflect'):
+    """
+    Load and preprocess a single image using the same transformation as in CoralDataModule.
+
+    Parameters:
+    - image_path: Path to the input image.
+    - img_size: Target image size (default: 300x300).
+    - padding_mode: Padding mode to be used ('reflect' or 'edge').
+
+    Returns:
+    - A preprocessed image tensor ready for input into the model.
+    """
+    def custom_pad(img):
+        left = top = right = bottom = 0
+        if img.width < img_size or img.height < img_size:
+            delta_w = max(img_size - img.width, 0)
+            delta_h = max(img_size - img.height, 0)
+            left = delta_w // 2
+            right = delta_w - left
+            top = delta_h // 2
+            bottom = delta_h - top
+        return transforms.functional.pad(img, (left, top, right, bottom), padding_mode=padding_mode)
+    
+    # Create the transform pipeline
+    transform = transforms.Compose([
+        transforms.Lambda(custom_pad),
+        transforms.Resize((img_size, img_size)),  # Ensure the image is resized to the target size
+        transforms.ToTensor(),  # Convert image to tensor
+    ])
+    
+    # Load the image
+    image = Image.open(image_path).convert("RGB")  # Ensure the image is in RGB format
+
+    # Apply the transformations
+    image_tensor = transform(image)
+    
+    return image_tensor
+
+
+
+def plot_original_images(input_images):
+    """
+    Plot the original images in a single row.
+
+    Parameters:
+    - input_images: A list of input image tensors (C, H, W).
+
+    Returns:
+    - None (displays the plot)
+    """
+    num_images = len(input_images)
+    fig, axes = plt.subplots(1, num_images, figsize=(7 * num_images, 7))  # Create a row of subplots
+
+    for idx, input_image in enumerate(input_images):
+        # Convert the image tensor to a format suitable for plotting
+        original_img = input_image.permute(1, 2, 0).cpu().numpy()
+        axes[idx].imshow(original_img)
+        axes[idx].axis('off')
+        axes[idx].set_title(
+            f"#{idx + 1}", 
+            fontsize=30, weight='bold'
+        )
+
+    plt.tight_layout()
+    plt.show()
 
 def visualize_average_attention_maps(model, input_images):
     """
