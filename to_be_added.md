@@ -34,6 +34,8 @@ print(f"95% Confidence Interval: [{lower}, {upper}]")
 
 ### **3. Confidence Interval Analysis for Performance Metrics**
 Instead of reporting single performance scores, use confidence intervals (CIs) to quantify uncertainty.
+- based on source:
+  - https://sebastianraschka.com/blog/2022/confidence-intervals-for-ml.html
 
 - **Bootstrapping Approach:**
   1. Resample the dataset multiple times (e.g., 10,000 iterations).
