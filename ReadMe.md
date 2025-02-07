@@ -43,7 +43,7 @@ Our approach integrates **Kolmogorov-Arnold Fourier embeddings** into Vision Tra
 
 The dataset comprises **923 images** of healthy and bleached corals, sourced from [Kaggle](https://www.kaggle.com). Key preprocessing steps include:
 - Removing images with dimensions > 300 pixels.
-- Stratified splits (Train: 70%, Validation: 20%, Test: 20%).
+- Stratified splits (Train: 70%, Validation: 10%, Test: 20%).
 - Data augmentation with brightness, contrast, and saturation adjustments.
 
 ![RGB Distribution](pics/rgb_dist.png)
