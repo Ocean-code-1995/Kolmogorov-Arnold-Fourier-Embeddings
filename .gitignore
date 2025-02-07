@@ -7,5 +7,6 @@ attention_map_pics/
 checkpoints/
 **/.DS_Store
 **/.hydra/
+**/__pycache__/
 
 **/explore_new_data/
