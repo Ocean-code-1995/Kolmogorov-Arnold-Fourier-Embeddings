@@ -1,0 +1,32 @@
+# configs/config.yaml
+wandb:
+  project: "1st run"
+
+data:
+  data_dir: "data/coral_original"
+  batch_size: 12
+  scaler_type: "min-max"
+  img_size: 300
+  test_size: 0.2
+  val_size: 0.2
+  num_workers: 2
+  padding_mode: "edge"
+
+model:
+  img_size: 300
+  patch_size: 10
+  in_channels: 3
+  embed_size: 64
+  depth: 2
+  heads: 2
+  mlp_dim: 128
+  dropout: 0.1
+  learning_rate: 1e-4
+  embedding_type: "linear"
+
+training:
+  max_epochs: 30
+
+hydra:
+  run:
+    dir: .

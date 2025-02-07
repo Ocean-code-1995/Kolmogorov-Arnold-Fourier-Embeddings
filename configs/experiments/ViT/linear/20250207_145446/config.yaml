@@ -1,0 +1,27 @@
+data:
+  batch_size: 12
+  data_dir: /teamspace/studios/this_studio/Kolmogorov-Arnold-Fourier-Embeddings/data/all_data
+  img_size: 300
+  num_workers: 2
+  padding_mode: edge
+  scaler_type: min-max
+  test_size: 0.2
+  val_size: 0.2
+hydra:
+  run:
+    dir: .
+model:
+  depth: 2
+  dropout: 0.1
+  embed_size: 64
+  embedding_type: linear
+  heads: 2
+  img_size: 300
+  in_channels: 3
+  learning_rate: 0.0001
+  mlp_dim: 128
+  patch_size: 10
+training:
+  max_epochs: 30
+wandb:
+  project: 1st run

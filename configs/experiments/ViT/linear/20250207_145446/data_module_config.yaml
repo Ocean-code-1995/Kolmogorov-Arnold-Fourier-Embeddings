@@ -1,0 +1,8 @@
+batch_size: 12
+data_dir: /teamspace/studios/this_studio/Kolmogorov-Arnold-Fourier-Embeddings/data/all_data
+img_size: 300
+num_workers: 2
+padding_mode: edge
+scaler_type: min-max
+test_size: 0.2
+val_size: 0.2
