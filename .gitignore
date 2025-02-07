@@ -7,6 +7,8 @@ attention_map_pics/
 checkpoints/
 **/.DS_Store
 **/.hydra/
-**/__pycache__/
+__pycache__/
+*.py[cod]
+
 
 **/explore_new_data/
