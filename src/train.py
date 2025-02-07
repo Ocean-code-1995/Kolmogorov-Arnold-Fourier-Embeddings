@@ -7,8 +7,8 @@ from pytorch_lightning.callbacks import ModelCheckpoint
 from hydra import main as hydra_main
 from omegaconf import DictConfig, OmegaConf
 
-from models.vision_transformer import ViT
-from data.data_module import CoralDataModule
+from models.ViT import ViT
+from data_modules.coral_module import CoralDataModule
 from utils.logger import log_hyperparameters, save_final_model_and_hparams
 from utils.set_seed import set_seed
 from evaluation.visualizations import plot_loss_curves
@@ -16,7 +16,7 @@ from evaluation.visualizations import plot_loss_curves
 
 
 
-@hydra_main(config_path="../configs", config_name="ViT_config")
+@hydra_main(config_path="../configs", config_name="ViT_config", version_base=None)
 def main(cfg: DictConfig) -> None:
     # Optional: print the configuration for debugging.
     print("==== Loaded Configuration ====")
@@ -121,6 +121,7 @@ def main(cfg: DictConfig) -> None:
 
 if __name__ == "__main__":
     set_seed(14473)
+    print("Device: ", "cuda" if torch.cuda.is_available() else "cpu")
     main()
 
 

@@ -16,6 +16,11 @@ def worker_init_fn(worker_id):
     np.random.seed(worker_seed)
     random.seed(worker_seed)
 
+# In a module accessible to your data module (e.g., in the same file or in a utils file)
+def pi_scale_transform(x):
+    return x * 2 * np.pi - np.pi
+
+
 class CoralDataModule(pl.LightningDataModule):
     def __init__(
         self,
@@ -67,7 +72,7 @@ class CoralDataModule(pl.LightningDataModule):
             return transforms.Compose(base_transforms)
         elif self.scaler_type == 'pi-scale':
             # Scale data to [-pi, +pi]
-            base_transforms.append(transforms.Lambda(lambda x: x * 2 * np.pi - np.pi))
+            base_transforms.append(transforms.Lambda(pi_scale_transform))
             return transforms.Compose(base_transforms)
         else:
             raise ValueError(f"Unknown scaler_type: {self.scaler_type}")
@@ -163,15 +168,15 @@ class CoralDataModule(pl.LightningDataModule):
 
     def train_dataloader(self):
         return DataLoader(
-            self.train_dataset, batch_size=self.batch_size, shuffle=True, num_workers=self.num_workers, pin_memory=True, worker_init_fn=worker_init_fn
+            self.train_dataset, batch_size=self.batch_size, shuffle=True, num_workers=self.num_workers, pin_memory=True, worker_init_fn=worker_init_fn, persistent_workers=True
         )
 
     def val_dataloader(self):
         return DataLoader(
-            self.val_dataset, batch_size=self.batch_size, num_workers=self.num_workers, pin_memory=True, worker_init_fn=worker_init_fn
+            self.val_dataset, batch_size=self.batch_size, num_workers=self.num_workers, pin_memory=True, worker_init_fn=worker_init_fn, persistent_workers=True
         )
 
     def test_dataloader(self):
         return DataLoader(
-            self.test_dataset, batch_size=self.batch_size, num_workers=self.num_workers, pin_memory=True, worker_init_fn=worker_init_fn
+            self.test_dataset, batch_size=self.batch_size, num_workers=self.num_workers, pin_memory=True, worker_init_fn=worker_init_fn, persistent_workers=True
         )

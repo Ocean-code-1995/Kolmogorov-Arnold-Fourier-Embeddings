@@ -6,5 +6,6 @@ conv_optuna_study.csv
 attention_map_pics/
 checkpoints/
 **/.DS_Store
+**/.hydra/
 
 **/explore_new_data/

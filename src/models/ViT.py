@@ -1,11 +1,12 @@
 import torch.nn as nn
+import torch
 import pytorch_lightning as pl
 from torchmetrics import (
     Accuracy, Precision, Recall, F1Score
 )
 from torch.optim import Adam
 
-from src.models.embeddings import PatchEmbedding
+from models.embeddings import PatchEmbedding
 
 
 class TransformerBlock(nn.Module):
@@ -107,9 +108,7 @@ class ViT(pl.LightningModule):
                 x = block(x)
         x = self.to_cls_token(x[:, 0])
         output = self.mlp_head(x).squeeze(-1)
-        if return_attn:
-            return output, attn_maps
-        return output
+        return (output, attn_maps) if return_attn else output
     
     def get_attention_maps(self, x):
         if x.dim() == 3:
