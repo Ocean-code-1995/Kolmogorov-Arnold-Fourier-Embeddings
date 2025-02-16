@@ -10,5 +10,6 @@ checkpoints/
 __pycache__/
 *.py[cod]
 data_all.zip
+data_original
 
 **/explore_new_data/
