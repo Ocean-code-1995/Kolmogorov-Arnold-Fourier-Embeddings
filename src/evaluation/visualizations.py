@@ -240,6 +240,92 @@ def visualize_average_attention_maps(model, input_images):
     plt.show();
 
 
+def visualize_all_blocks_all_heads(model, input_image, average_type='row'):
+    """
+    Shows how to place a colorbar next to each subplot using `make_axes_locatable`.
+    """
+    model.eval()
+
+    # Basic info
+    img_size   = input_image.shape[1]
+    patch_size = model.patch_embedding.patch_size
+    num_patches = img_size // patch_size
+
+    print("Debug Info:")
+    print(f"  - Input image shape (C,H,W): {tuple(input_image.shape)}")
+    print(f"  - Model's reported patch_size: {patch_size}")
+    print(f"  - Number of patches per dimension: {num_patches}")
+
+    with torch.no_grad():
+        _, attn_maps = model(input_image.unsqueeze(0), return_attn=True)
+
+    depth   = len(attn_maps)
+    n_heads = attn_maps[0].shape[1]
+    print(f"  - Depth (# of blocks): {depth}")
+    for i, block_attn in enumerate(attn_maps):
+        print(f"Block {i} attention shape: {tuple(block_attn.shape)}")
+
+    # Prepare subplots
+    fig, axes = plt.subplots(nrows=depth, ncols=n_heads, figsize=(3*n_heads, 3*depth))
+    if depth == 1 and n_heads == 1:
+        axes = [[axes]]
+    elif depth == 1:
+        axes = [axes]
+    elif n_heads == 1:
+        axes = [[ax] for ax in axes]
+
+    original_img = input_image.permute(1, 2, 0).cpu().numpy()
+
+    for block_idx in range(depth):
+        block_attn = attn_maps[block_idx].squeeze(0)  # [n_heads, seq_len, seq_len]
+
+        for head_idx in range(n_heads):
+            head_attn_map = block_attn[head_idx].cpu().numpy()  
+            # e.g. [901, 901] for 900 patches + 1 CLS
+
+            # Exclude CLS row/col => [900, 900]
+            patch_attn_map = head_attn_map[1:, 1:]
+
+            # Row or column averaging
+            if average_type == 'row':
+                avg_vector = patch_attn_map.mean(axis=0)
+                title_text = "(Row Avg)"
+            else:
+                avg_vector = patch_attn_map.mean(axis=1)
+                title_text = "(Col Avg)"
+
+            avg_map_2d = avg_vector.reshape(num_patches, num_patches)
+            resized_map = cv2.resize(avg_map_2d, (img_size, img_size), interpolation=cv2.INTER_LINEAR)
+
+            # Normalize
+            min_val, max_val = resized_map.min(), resized_map.max()
+            if max_val - min_val > 1e-6:
+                resized_map = (resized_map - min_val) / (max_val - min_val)
+            else:
+                resized_map = resized_map - min_val
+
+            # Plot on the current subplot
+            ax = axes[block_idx][head_idx]
+            ax.imshow(original_img, cmap='gray')
+
+            # We'll store the image handle in "im" so we can create a colorbar
+            im = ax.imshow(resized_map, cmap='coolwarm', alpha=0.5, vmin=0.0, vmax=1.0)
+            ax.set_title(f"Block {block_idx+1}, Head {head_idx+1}\n{title_text}", fontsize=10)
+            ax.axis('off')
+
+            # Create a small axis on the right for the colorbar
+            divider = make_axes_locatable(ax)
+            cax = divider.append_axes("right", size="5%", pad=0.05)
+            cbar = fig.colorbar(im, cax=cax)
+            cbar.ax.tick_params(labelsize=8)  # smaller tick labels if desired
+
+    plt.tight_layout();
+
+
+
+
+
+
 
 def visualize_model_predictions(model, data_module):
     """
