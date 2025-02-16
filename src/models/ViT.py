@@ -13,7 +13,12 @@ class TransformerBlock(nn.Module):
     def __init__(self, embed_size, heads, mlp_dim, dropout):
         super().__init__()
         self.norm1 = nn.LayerNorm(embed_size)
-        self.attn = nn.MultiheadAttention(embed_dim=embed_size, num_heads=heads, dropout=dropout)
+        self.attn = nn.MultiheadAttention(
+            embed_dim=embed_size,
+            num_heads=heads,
+            dropout=dropout,
+            #average_attn_weights=False
+        )
         self.norm2 = nn.LayerNorm(embed_size)
         self.mlp = nn.Sequential(
             nn.Linear(embed_size, mlp_dim),
@@ -26,7 +31,15 @@ class TransformerBlock(nn.Module):
     def forward(self, x, return_attn=False):
         x = self.norm1(x)
         x = x.permute(1, 0, 2)
-        attn_output, attn_weights = self.attn(x, x, x)
+        #attn_output, attn_weights = self.attn(x, x, x)
+        # Trying to fix individual attent vis:
+        #-------------------------------------
+        # Pass average_attn_weights=False at call time instead:
+        attn_output, attn_weights = self.attn(
+            x, x, x, 
+            need_weights=return_attn,
+            average_attn_weights=False  # allowed in older PyTorch
+        )
         attn_output = attn_output.permute(1, 0, 2)
         x = self.norm2(x.permute(1, 0, 2) + attn_output)
         x2 = self.mlp(x)
@@ -46,12 +59,14 @@ class ViT(pl.LightningModule):
         dropout=0.1, 
         learning_rate=1e-3,  
         embedding_type='conv',
-        fourier_params=None
+        fourier_params=None,
+        weight_decay=0
     ):
         super().__init__()
         
         # parameters
         self.learning_rate = learning_rate
+        self.weight_decay = weight_decay
         
         self.patch_embedding = PatchEmbedding(
             img_size, patch_size, in_channels, embed_size, embedding_type, fourier_params=fourier_params
@@ -217,6 +232,18 @@ class ViT(pl.LightningModule):
         self.log('test_recall', recall, on_step=False, on_epoch=True, prog_bar=True)
         
         return loss
+    
+    #def on_after_backward(self):
+    #    has_grad = False
+    #    for name, param in self.named_parameters():
+    #        if param.grad is not None:
+    #            has_grad = True
+    #            self.logger.experiment.add_histogram(
+    #                f"gradients/{name}",
+    #                param.grad,
+    #                self.global_step
+    #            )
+
 
     def configure_optimizers(self):
-        return Adam(self.parameters(), lr=self.learning_rate)
+        return Adam(self.parameters(), lr=self.learning_rate, weight_decay=self.weight_decay)
