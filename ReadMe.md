@@ -125,6 +125,12 @@ The dataset comprises **923 images** of healthy and bleached corals, sourced fro
 
 ---
 
+Similar experiments:
+   - https://arxiv.org/pdf/2503.01124
+   - https://arxiv.org/pdf/2502.06018
+
+---
+
 ## How to Run
 
 ### Prerequisites
